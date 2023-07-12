@@ -1,0 +1,271 @@
+openapi: 3.0.3
+info:
+  title: iam
+  description: iam api
+  version: 1.0.0
+servers:
+  - url: 'https://www.example.com/api/open/v1'
+tags:
+  - name: login
+    description: Operations about login
+  - name: user
+    description: Operations about users
+  - name: permissions
+    description: Operations about permissions
+  - name: tokens
+    description: Operations about tokens
+paths:
+  /login:
+    post:
+      tags:
+        - login
+      summary: User login
+      description: This API allows user to login into the system
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: The token to be used for subsequent authenticated requests.
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+  
+  /token-info:
+    get:
+      tags:
+        - tokens
+      summary: Get token info
+      description: This API allows users to get token info.
+      operationId: getTokenInfo
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+      responses:
+        '200':
+          description: Token info retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenInfo'
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+
+  /signup:
+    post:
+      tags:
+        - login
+      summary: User signup
+      description: This API allows users to sign up for a new account.
+      operationId: signup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          description: Signup successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  username:
+                    type: string
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '409':
+          description: Conflict. User already exists.
+        '500':
+          description: Internal Server Error.
+  
+  /permissions:
+    post:
+      tags:
+        - permissions
+      summary: Create permission
+      description: This API allows users to create a new permission.
+      operationId: createPermission
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Permission'
+      responses:
+        '201':
+          description: Permission created
+        '400':
+          description: Bad request.
+        '409':
+          description: Conflict. Permission already exists.
+        '500':
+          description: Internal Server Error.
+  
+    delete:
+      tags:
+        - permissions
+      summary: Delete permission
+      description: This API allows users to delete a permission.
+      operationId: deletePermission
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Permission'
+      responses:
+        '204':
+          description: Permission deleted
+        '400':
+          description: Bad request.
+        '404':
+          description: Not found. Permission does not exist.
+        '500':
+          description: Internal Server Error.
+
+  /validate-operation:
+    post:
+      tags:
+        - permissions
+      summary: Validate operation
+      description: This API allows users to validate an operation.
+      operationId: validateOperation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnforcePermissionReq'
+      responses:
+        '200':
+          description: Operation validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: boolean
+        '400':
+          description: Bad request.
+        '500':
+          description: Internal Server Error.
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
+    CreateUserRequest:
+      type: object
+      required:
+        - username
+        - password
+        - email
+      properties:
+        username:
+          type: string
+          minLength: 1
+          maxLength: 20
+        password:
+          type: string
+          minLength: 1
+          maxLength: 20
+        email:
+          type: string
+          format: email
+    Permission:
+      type: object
+      required:
+        - serviceName
+        - resourceType
+        - resourceId
+        - action
+        - effect
+      properties:
+        serviceName:
+          type: string
+        resourceType:
+          type: string
+        resourceId:
+          type: string
+          format: uuid
+        action:
+          type: array
+          items:
+            type: string
+        effect:
+          type: string
+          enum: [allow, deny]
+    EnforcePermissionReq:
+      type: object
+      required:
+        - serviceName
+        - resourceType
+        - action
+      properties:
+        serviceName:
+          type: string
+        resourceType:
+          type: string
+        resourceId:
+          type: string
+          format: uuid
+        action:
+          type: string
+
+    TokenInfo:
+      type: object
+      properties:
+        username:
+          type: string
+        expiredAt:
+          type: string
+          format: date-time
+          
+  parameters:
+    Authorization:
+      name: Authorization
+      in: header
+      required: true
+      schema:
+        type: string
+
+
