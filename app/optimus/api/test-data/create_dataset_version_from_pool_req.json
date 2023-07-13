@@ -1,0 +1,10 @@
+{
+    "name": "test-update-dataset version 1",
+    "description": "test create version from pool",
+    "poolName": "test-pool-2",
+    "dataPartition": {
+        "train": 70,
+        "validation": 20,
+        "test": 10
+    }
+}

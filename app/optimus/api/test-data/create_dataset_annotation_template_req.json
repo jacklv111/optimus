@@ -1,0 +1,406 @@
+{
+    "name": "coco_det",
+    "type": "coco-type",
+    "labels": [
+        {
+            "name": "airplane",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "apple",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "backpack",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "banana",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "baseball bat",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "baseball glove",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "bear",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "bed",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "bench",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "bicycle",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "bird",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "boat",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "book",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "bottle",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "bowl",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "broccoli",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "bus",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "cake",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "car",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "carrot",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "cat",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "cell phone",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "chair",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "clock",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "couch",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "cow",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "cup",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "dining table",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "dog",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "donut",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "elephant",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "fire hydrant",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "fork",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "frisbee",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "giraffe",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "hair drier",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "handbag",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "horse",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "hot dog",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "keyboard",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "kite",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "knife",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "laptop",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "microwave",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "motorcycle",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "mouse",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "orange",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "oven",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "parking meter",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "person",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "pizza",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "potted plant",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "refrigerator",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "remote",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "sandwich",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "scissors",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "sheep",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "sink",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "skateboard",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "skis",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "snowboard",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "spoon",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "sports ball",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "stop sign",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "suitcase",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "surfboard",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "teddy bear",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "tennis racket",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "tie",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "toaster",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "toilet",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "toothbrush",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "traffic light",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "train",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "truck",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "tv",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "umbrella",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "vase",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "wine glass",
+            "superCategoryName": "indoor",
+            "color": 0
+        },
+        {
+            "name": "zebra",
+            "superCategoryName": "indoor",
+            "color": 0
+        }
+    ]
+}

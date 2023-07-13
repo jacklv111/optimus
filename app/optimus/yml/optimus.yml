@@ -1,0 +1,1137 @@
+openapi: 3.0.3
+info:
+  title: optimus
+  description: optimus api
+  version: 1.0.0
+servers:
+  - url: 'https://www.example.com/api/open/v1'
+tags:
+  - name: annotation template
+    description: Operation about annotation template
+  - name: dataset
+    description: Operation about dataset
+  - name: dataset version
+    description: Operation about dataset version
+  - name: dataset pool
+    description: Operation about dataset pool
+  - name: dataset annotation template
+    description: Operation about dataset annotation template
+  - name: workspace
+    description: Operation about workspace
+paths:
+  /annotation-templates/{annotationTemplateId}/details:
+    get:
+      tags:
+        - annotation template
+      summary: Get annotation template details
+      description: Get annotation template details
+      operationId: getAnnoTemplateDetails
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/AnnotationTemplateId'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnnotationTemplateDetails'
+        '404':
+          description: annotation template not found
+        "401":
+          description: Unauthorized
+  /annotation-templates:
+    post:
+      tags:
+        - annotation template
+      summary: Create an annotation template
+      description: Create an annotation template
+      operationId: createAnnotationTemplate
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        description: Create an new annotation template
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAnnotationTemplateRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAnnoTemplateSuccessResp'
+                  
+        '400':
+          description: Invalid input parameters 
+    put:
+      tags:
+        - annotation template
+      summary: Update an annotation template
+      description: Update an annotation template
+      operationId: updateAnnotationTemplate
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+      requestBody:
+        description: Update an existed annotation template
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAnnotationTemplateRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Annotation template not found
+
+  /datasets:
+    post:
+      tags:
+        - dataset
+      summary: Create dataset
+      description: This API allows user to create dataset
+      operationId: createDataset
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/Workspace'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDatasetRequest'
+      responses:
+        '200':
+          description: Create dataset successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The dataset id
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+    get:
+      tags:
+        - dataset
+      summary: Get dataset list
+      description: This API allows user to get dataset list
+      operationId: getDatasetList
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/Workspace'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      responses:
+        '200':
+          description: Get dataset list successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalCount:
+                    type: integer
+                    description: The total number of datasets
+                  datasetList:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DatasetListItem'
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+  
+  /datasets/{datasetId}:
+    delete:
+      tags:
+        - dataset
+      summary: Delete dataset
+      description: This API allows user to delete dataset
+      operationId: deleteDataset
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/DatasetId'
+      responses:
+        '200':
+          description: Delete dataset successful
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+    put:
+      tags:
+        - dataset
+      summary: Update dataset
+      description: This API allows user to update dataset
+      operationId: updateDataset
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/DatasetId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDatasetRequest'
+      responses:
+        '200':
+          description: Update dataset successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The dataset id
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+
+  /datasets/{datasetId}/pools:
+    post:
+      tags:
+        - dataset pool
+      summary: Create dataset pool
+      description: This API allows user to create dataset pool
+      operationId: createDatasetPool
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/DatasetId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDatasetPoolRequest'
+      responses:
+        '200':
+          description: Create dataset pool successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The dataset pool id
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+
+  /datasets/{datasetId}/pools/{poolName}/upload-zip:
+    post:
+      tags:
+        - dataset pool
+      summary: Upload raw data to dataset pool
+      description: This API allows user to upload raw data to dataset pool
+      operationId: uploadZipToPool
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/DatasetId'
+        - $ref: '#/components/parameters/PoolName'
+        - $ref: '#/components/parameters/ZipFormat'
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: Upload zip to pool successful
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+
+  /datasets/{datasetId}/pools/{poolName}:
+    delete:
+      tags:
+        - dataset pool
+      summary: Delete dataset pool
+      description: This API allows user to delete dataset pool
+      operationId: deleteDatasetPool
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/DatasetId'
+        - $ref: '#/components/parameters/PoolName'
+      responses:
+        '200':
+          description: Delete dataset pool successful
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+
+  /datasets/{datasetId}/upload-zip:
+    post:
+      tags:
+        - dataset
+      summary: Upload dataset zip data
+      description: This API allows user to upload dataset zip data, it contains raw data and annotations and can be trained directly. It will create a new dataset version for the uploaded data.
+      operationId: uploadDatasetZipData
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/DatasetId'
+        - $ref: '#/components/parameters/ZipFormat'
+        - $ref: '#/components/parameters/ZipFileName'
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: Upload dataset annotations successful
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+  
+  /datasets/{datasetId}/pools/{poolName}/data-items:
+    get:
+      tags:
+        - dataset pool
+      summary: Get dataset pool data items
+      description: This API allows user to get dataset pool data items
+      operationId: getDataPoolItems
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/DatasetId'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/PoolName'
+        - $ref: '#/components/parameters/LabelId'
+        - $ref: '#/components/parameters/HasAnnotationFilter'
+
+      responses:
+        '200':
+          description: Get dataset pool data successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataItemList'
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+
+    delete:
+      tags:
+        - dataset pool
+      summary: Delete dataset pool data items
+      description: This API allows user to delete dataset pool data items (raw data and annotations)
+      operationId: deleteDataPoolItems
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/DatasetId'
+        - $ref: '#/components/parameters/PoolName'
+        - $ref: '#/components/parameters/RawDataIdList'
+        - $ref: '#/components/parameters/AnnotationIdList'
+      responses:
+        '200':
+          description: Delete dataset data successful
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+
+  /datasets/{datasetId}/pools/{poolName}/statistics:
+    get:
+      tags:
+        - dataset pool
+      summary: Get data pool statistics
+      description: This API allows user to get data pool statistics
+      operationId: getDataPoolStatistics
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/DatasetId'
+        - $ref: '#/components/parameters/PoolName'
+      responses:
+        '200':
+          description: Get datas pool statistics successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataPoolStatistics'
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+  
+  /datasets/{datasetId}/details:
+    get:
+      tags:
+        - dataset
+      summary: Get dataset details
+      description: This API allows user to get dataset details
+      operationId: getDatasetDetails
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/DatasetId'
+      responses:
+        '200':
+          description: Get dataset details successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetDetails'
+                
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+  
+  /datasets/{datasetId}/versions:
+    post:
+      tags:
+        - dataset version
+      summary: Create dataset version
+      description: This API allows user to create dataset version
+      operationId: createDatasetVersion
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/DatasetId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                poolName:
+                  type: string
+                dataPartition:
+                  $ref: '#/components/schemas/DataPartition'
+              required:
+                - name
+      responses:
+        '200':
+          description: Create dataset version successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The dataset version id
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+
+  /datasets/{datasetId}/versions/{versionName}:
+    delete:
+      tags:
+        - dataset version
+      summary: Delete dataset version
+      description: This API allows user to delete dataset version
+      operationId: deleteDatasetVersion
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/DatasetId'
+        - $ref: '#/components/parameters/VersionName'
+      responses:
+        '200':
+          description: Delete dataset version successful
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+
+  /datasets/{datasetId}/versions/{versionName}/data-items:
+    get:
+      tags:
+        - dataset version
+      summary: Get dataset version data items
+      description: This API allows user to get dataset version data items
+      operationId: getDatasetVersionDataItems
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/DatasetId'
+        - $ref: '#/components/parameters/VersionName'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/LabelId'
+        - $ref: '#/components/parameters/HasAnnotationFilter'
+        - $ref: '#/components/parameters/VersionPartitionName'
+      responses:
+        '200':
+          description: Get dataset version data items successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataItemList'
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+
+  /datasets/{datasetId}/annotation-template:
+    get: 
+      tags:
+        - dataset annotation template
+      summary: Get dataset annotation template
+      description: This API allows user to get dataset annotation template
+      operationId: getDatasetAnnotationTemplate
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/DatasetId'
+      responses:
+        '200':
+          description: Get dataset annotation template successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnnotationTemplateDetails'
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+    post:
+      tags:
+        - dataset annotation template
+      summary: Create dataset annotation template
+      description: This API allows user to create dataset annotation template
+      operationId: createDatasetAnnotationTemplate
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/DatasetId'
+      requestBody:
+        description: Create an new annotation template
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAnnotationTemplateRequest'
+        required: true
+      responses:
+        '200':
+          description: Create dataset annotation template successful
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+    put: 
+      tags:
+        - dataset annotation template
+      summary: Update dataset annotation template
+      description: This API allows user to update dataset annotation template
+      operationId: updateDatasetAnnotationTemplate
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/DatasetId'
+      requestBody:
+        description: Update an existed annotation template
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAnnotationTemplateRequest'
+        required: true
+      responses:
+        '200':
+          description: Update dataset annotation template successful
+        '400':
+          description: Bad request. User ID must be an integer and pass all validation.
+        '401':
+          description: Unauthorized. User credentials are not valid.
+        '500':
+          description: Internal Server Error.
+
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
+      
+    CreateDatasetRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        annotationTemplateId:
+          type: string
+          format: uuid
+        annotationTemplateType:
+          type: string
+        rawDataType:
+          type: string
+        coverImageUrl:
+          type: string
+  
+      required:
+        - name
+        - rawDataType
+    
+    DataPartition:
+      type: object
+      properties:
+        train:
+          type: integer
+        test:
+          type: integer
+        validation:
+          type: integer
+      description: The data partition ratio. The sum of train, test and validation must be 100.
+      required:
+        - train
+        - test
+        - validation
+
+    DatasetListItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The dataset id
+        name:
+          type: string
+          description: The dataset name
+        description:
+          type: string
+          description: The dataset description
+        createdAt:
+          type: integer
+          format: int64
+          description: The dataset created time
+        updatedAt:
+          type: integer
+          format: int64
+          description: The dataset updated time
+  
+      required:
+        - id
+        - name
+        - description
+        - createdAt
+  
+    DatasetDetails:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The dataset id
+        name:
+          type: string
+          description: The dataset name
+        description:
+          type: string
+          description: The dataset description
+        createdAt:
+          type: integer
+          format: int64
+          description: The dataset created time
+        updatedAt:
+          type: integer
+          format: int64
+          description: The dataset updated time
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatasetVersionDetails'
+        pools:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataPoolDetails'
+        rawDataType:
+          type: string
+          description: The dataset raw data type
+        coverImageUrl:
+          type: string
+          description: The dataset cover image url
+        annotationTemplateId:
+          type: string
+          format: uuid
+        annotationTemplateType:
+          type: string
+       
+
+
+    DatasetVersionDetails:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The dataset version name
+        number:
+          type: integer
+          description: The dataset version number
+        description:
+          type: string
+          description: The dataset version description
+        createdAt:
+          type: integer
+          format: int64
+          description: The dataset version created time
+        updatedAt:
+          type: integer
+          format: int64
+          description: The dataset version updated time
+        trainRawDataNum:
+          type: integer
+          description: The dataset version train raw data number
+        testRawDataNum:
+          type: integer
+          description: The dataset version test raw data number
+        validationRawDataNum:
+          type: integer
+          description: The dataset version validation raw data number
+
+    DataPoolDetails:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The data pool name
+        description:
+          type: string
+          description: The data pool description
+        createdAt:
+          type: integer
+          format: int64
+          description: The data pool created time
+        updatedAt:
+          type: integer
+          format: int64
+          description: The data pool updated time
+    
+    DataPoolStatistics:
+      type: object
+      properties:
+        rawDataCount:
+          type: integer
+          format: int32
+        labelCount:
+          type: integer
+          format: int32
+          description: the number of labels in the annotation data view.
+        labelDistribution:
+          type: array
+          items:
+            $ref: '#/components/schemas/LabelDistribution'
+          description: the distribution of labels in the annotation data view.
+        totalDataSize:
+          type: integer
+          format: int64
+          description: the total size of the data in the data view in bytes.
+          
+    LabelDistribution:
+      type: object
+      properties:
+        labelId:
+          type: string
+          description: the label id
+        count:
+          type: integer
+          format: int32
+          description: the number of the label in the data view.
+        ratio:
+          type: number
+          description: the ratio of the label in the data view.
+
+    DataItemList:
+      type: object
+      properties:
+        rawDataType:
+          type: string
+          description: The dataset raw data type
+        annotationTemplateId:
+          type: string
+          format: uuid
+          description: The dataset annotation template id
+        annotationTemplateType:
+          type: string
+          description: The dataset annotation template type
+        dataList:
+          type: array
+          items:
+            type: object
+            properties:
+              rawDataId:
+                type: string
+                format: uuid
+                description: The dataset raw data id
+              annotationId:
+                type: string
+                format: uuid
+                description: The dataset annotation id
+              rawDataUrl:
+                type: string
+                description: The dataset raw data url
+              annotationUrl:
+                type: string
+                description: The dataset annotation url
+              labelList:
+                type: array
+                items:
+                  type: string
+                  format: uuid
+                  description: The dataset label id
+  
+    UpdateDatasetRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        coverImageUrl:
+          type: string
+        annotationTemplateId:
+          type: string
+          format: uuid
+    
+    CreateDatasetPoolRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        srcVersion:
+          type: string
+          description: The dataset version name. If specified, the data pool will be created from the dataset version else it will be an empty data pool.
+      required:
+        - name
+    
+    AnnotationTemplateDetails:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: the id of the annotation template
+        name:
+          type: string
+          description: name of the annotation template
+        createAt:
+          $ref: '#/components/schemas/TimeFmtInMs'
+        updateAt:
+          $ref: '#/components/schemas/TimeFmtInMs'
+        type:
+          type: string
+          description: the type of the annotation template
+        labels:
+          type: array
+          items: 
+            $ref: '#/components/schemas/Label'
+        wordList:
+          $ref: '#/components/schemas/WordList'
+    
+    Label:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: the id of the label
+        name:
+          type: string
+          description: the name of the label
+        superCategoryName:
+          type: string
+          description: the super category name
+        color:
+          type: integer
+          format: int32
+        keyPointDef:
+          $ref: '#/components/schemas/KeyPointDef'
+        keyPointSkeleton:
+          $ref: '#/components/schemas/KeyPointSkeleton'
+        coverImageUrl:
+          type: string
+      required:
+        - name
+        - color
+  
+    WordList:
+      type: array
+      items:
+        type: string
+        description: the words in word list should not be equal
+    
+    CreateAnnotationTemplateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: name of the annotation template
+        type:
+          type: string
+          description: the type of the annotation template
+        description:
+          type: string
+          description: the description of the annotation template
+        labels:
+          type: array
+          items: 
+            $ref: '#/components/schemas/Label'
+        wordList:
+          $ref: '#/components/schemas/WordList'
+        isCreateFromExisted:
+          type: boolean
+          description: whether create the annotation template from existed annotation template
+        existedAnnotationTemplateId:
+          type: string
+          format: uuid
+          description: the id of the existed annotation template
+      required:
+        - name
+        - type
+
+    CreateAnnoTemplateSuccessResp:
+      type: object
+      properties:
+        annotationTemplateId:
+          type: string
+          format: uuid
+    
+    UpdateAnnotationTemplateRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: the id of the annotation template
+        name:
+          type: string
+          description: the name of the annotation template
+        type:
+          type: string
+          description: the type of the annotation template
+        description:
+          type: string
+          description: the description of the annotation template
+        labels:
+          type: array
+          items: 
+            $ref: '#/components/schemas/Label'
+        wordList:
+          $ref: '#/components/schemas/WordList'
+      required:
+        - name
+        - type
+    
+    KeyPointDef:
+      type: array
+      items:
+        type: string
+      description: the defination of the key points
+
+    KeyPointSkeleton:
+      type: array
+      items:
+        type: array
+        items:
+          type: integer
+          format: int32
+          description: the size should be 2. Each item indicates keypoints with index item[0] and index item[1] have a connect
+    
+    TimeFmtInMs:
+      type: integer
+      format: int64
+      example: 1672320075000
+      description: Unix timestamp in ms
+
+  parameters:
+    DatasetId:
+      name: datasetId
+      in: path
+      description: The dataset id
+      required: true
+      schema:
+        type: string
+    
+    AnnotationTemplateId:
+      in: path
+      name: annotationTemplateId
+      schema:
+        type: string
+        format: uuid
+      description: The id of an annotation template
+      required: true
+    Workspace:
+      name: workspace
+      in: query
+      description: The workspace name
+      required: false
+      schema:
+        type: string
+    Offset:
+      in: query
+      name: offset
+      schema:
+        type: integer
+        format: int32
+        default: 0
+      description: The number of items to skip before starting to collect the result set
+    Limit:
+      in: query
+      name: limit
+      schema:
+        type: integer
+        format: int32
+        default: 10
+        minimum: 1
+        maximum: 50
+      description: The numbers of items to return
+    ZipFormat:
+      name: X-Zip-Format
+      in: header
+      required: true
+      schema:
+        type: string
+        enum: [sam, image-classification, rgbd-bounding-box-2d-and-3d, image-segmentation-masks, ocr, coco, raw-data-images]
+    ZipFileName:
+      name: X-Zip-File-Name
+      in: header
+      required: true
+      schema:
+        type: string
+    Authorization:
+      name: Authorization
+      in: header
+      required: true
+      schema:
+        type: string
+    RawDataIdList:
+      name: rawDataIdList
+      in: query
+      description: The id list
+      schema:
+        type: array
+        items:
+          type: string
+          format: uuid
+      explode: false
+      style: form
+    AnnotationIdList:
+      name: annotationIdList
+      in: query
+      description: The id list
+      schema:
+        type: array
+        items:
+          type: string
+          format: uuid
+      explode: false
+      style: form
+        
+    PoolName:
+      name: poolName
+      in: path
+      description: The data pool name
+      schema:
+        type: string
+      required: true 
+    VersionName:
+      name: versionName
+      in: path
+      description: The dataset version name
+      schema:
+        type: string
+      required: true
+    LabelId:
+      name: labelId
+      in: query
+      description: The label id
+      schema:
+        type: string
+        format: uuid
+    SortBy:
+      name: sortBy
+      in: query
+      description: The order by field
+      schema:
+        type: string
+        enum: [createdAt, name]
+      required: false
+    SortOrder:
+      name: sortOrder
+      in: query
+      description: The order by field
+      schema:
+        type: string
+        enum: [asc, desc]
+      required: false
+    HasAnnotationFilter:
+      name: hasAnnotationFilter
+      in: query
+      description: Filter data items that have annotation or not
+      required: false
+      schema:
+        type: string
+        enum: [all, hasNoAnnotation, hasAnnotation]
+    VersionPartitionName:
+      name: versionPartitionName
+      in: query
+      description: The version partition name
+      required: true
+      schema:
+        type: string
+        enum: [train, test, val]
