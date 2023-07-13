@@ -13,8 +13,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jacklv111/common-sdk/errors"
 	"github.com/jacklv111/common-sdk/log"
 	"github.com/jacklv111/common-sdk/utils"
+	"github.com/jacklv111/optimus/app/optimus"
 	"github.com/jacklv111/optimus/app/optimus/manager"
 	"github.com/jacklv111/optimus/app/optimus/view-object/openapi"
 	"github.com/jacklv111/optimus/pkg/dataset"
@@ -31,17 +33,17 @@ func CreateDatasetPool(c *gin.Context) {
 	err = c.BindJSON(&req)
 	if err != nil {
 		log.Errorf("Bind json failed, error: %s", err)
-		c.JSON(http.StatusBadRequest, openapi.Error{Code: "1", Message: err.Error()})
+		c.Error(errors.NewAppErr(optimus.INVALID_PARAMS, err, err.Error()))
 		return
 	}
 	err = manager.DatasetMgr.CreateDatasetPool(userInfo, datasetId, req)
 	if err != nil {
 		if err == dataset.ErrNotFound {
-			c.Status(http.StatusNotFound)
+			c.Error(errors.NewAppErr(optimus.NOT_FOUND, err, err.Error()))
 			return
 		}
 		log.Errorf("Create dataset pool failed, error: %s", err)
-		c.JSON(http.StatusInternalServerError, openapi.Error{Code: "1", Message: err.Error()})
+		c.Error(errors.NewAppErr(optimus.UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 
@@ -66,11 +68,11 @@ func DeleteDataPoolItems(c *gin.Context) {
 	err = manager.DatasetMgr.DeletePoolDataItems(userInfo, datasetId, poolName, rawDataIdList, annotationIdList)
 	if err != nil {
 		if err == dataset.ErrNotFound {
-			c.Status(http.StatusNotFound)
+			c.Error(errors.NewAppErr(optimus.NOT_FOUND, err, err.Error()))
 			return
 		}
 		log.Errorf("Delete dataset data items failed, error: %s", err)
-		c.JSON(http.StatusInternalServerError, openapi.Error{Code: "1", Message: err.Error()})
+		c.Error(errors.NewAppErr(optimus.UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 	c.Status(http.StatusOK)
@@ -87,11 +89,11 @@ func DeleteDatasetPool(c *gin.Context) {
 	err = manager.DatasetMgr.DeletePool(userInfo, datasetId, poolName)
 	if err != nil {
 		if err == dataset.ErrNotFound {
-			c.Status(http.StatusNotFound)
+			c.Error(errors.NewAppErr(optimus.NOT_FOUND, err, err.Error()))
 			return
 		}
 		log.Errorf("Delete dataset pool failed, error: %s", err)
-		c.JSON(http.StatusInternalServerError, openapi.Error{Code: "1", Message: err.Error()})
+		c.Error(errors.NewAppErr(optimus.UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 
@@ -112,11 +114,11 @@ func UploadZipToPool(c *gin.Context) {
 	err = manager.DatasetMgr.UploadZipToPool(userInfo, datasetId, poolName, zipFormat, c.Request.Body)
 	if err != nil {
 		if err == dataset.ErrNotFound {
-			c.Status(http.StatusNotFound)
+			c.Error(errors.NewAppErr(optimus.NOT_FOUND, err, err.Error()))
 			return
 		}
 		log.Errorf("Upload zip to pool failed, error: %s", err)
-		c.JSON(http.StatusInternalServerError, openapi.Error{Code: "1", Message: err.Error()})
+		c.Error(errors.NewAppErr(optimus.UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 
@@ -135,11 +137,11 @@ func GetDataPoolStatistics(c *gin.Context) {
 	res, err := manager.DatasetMgr.GetDataPoolStatistics(userInfo, datasetId, poolName)
 	if err != nil {
 		if err == dataset.ErrNotFound {
-			c.Status(http.StatusNotFound)
+			c.Error(errors.NewAppErr(optimus.NOT_FOUND, err, err.Error()))
 			return
 		}
 		log.Errorf("Get data pool statistics failed, error: %s", err)
-		c.JSON(http.StatusInternalServerError, openapi.Error{Code: "1", Message: err.Error()})
+		c.Error(errors.NewAppErr(optimus.UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, res)

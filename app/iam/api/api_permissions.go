@@ -126,7 +126,7 @@ func DeletePermission(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated)
+	c.JSON(http.StatusCreated, gin.H{})
 }
 
 // ValidateOperation - Validate operation
@@ -165,5 +165,5 @@ func ValidateOperation(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{})
 }

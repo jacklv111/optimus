@@ -17,10 +17,12 @@ import (
 	"github.com/jacklv111/common-sdk/log"
 	"github.com/jacklv111/optimus/app/iam"
 	"github.com/jacklv111/optimus/app/iam/view-object/openapi"
+	"github.com/jacklv111/optimus/app/optimus/api"
 	"github.com/jacklv111/optimus/pkg/iam/constant"
 	loginsvc "github.com/jacklv111/optimus/pkg/iam/login/service"
 	loginvb "github.com/jacklv111/optimus/pkg/iam/login/value-object"
 	psvc "github.com/jacklv111/optimus/pkg/iam/permission/service"
+	resmgmtsvc "github.com/jacklv111/optimus/pkg/resource-manager/optimus/service"
 )
 
 // Login - User login
@@ -75,7 +77,6 @@ func Signup(c *gin.Context) {
 		c.Error(errors.NewAppErr(iam.UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
-
 	_, err = resmgmtsvc.ResMgmtSvc.Create(signupInfo.Domain, api.DEFAULT_WORKSPACE)
 	if err != nil {
 		log.Errorf("Error occurred when creating workspace %s", err)

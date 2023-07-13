@@ -11,10 +11,10 @@ package manager
 import (
 	aifsclientgo "github.com/jacklv111/aifs-client-go"
 	"github.com/jacklv111/optimus/app/optimus/view-object/openapi"
-	valueobject "github.com/jacklv111/optimus/pkg/dataset/value-object"
+	dsvb "github.com/jacklv111/optimus/pkg/dataset/value-object"
 )
 
-func assembleDataItemList(dataList valueobject.DataItemList) openapi.DataItemList {
+func assembleDataItemList(dataList dsvb.DataItemList) openapi.DataItemList {
 	var res openapi.DataItemList
 	res.RawDataType = dataList.RawDataType
 	res.AnnotationTemplateId = dataList.AnnotationTemplateId

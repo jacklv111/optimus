@@ -1,0 +1,14 @@
+[request_definition]
+r = domain, sub, resource_type, resource_id, act
+
+[policy_definition]
+p = domain, sub, resource_type, resource_id, act, eft
+
+[role_definition]
+g = _, _, _
+
+[policy_effect]
+e = some(where (p.eft == allow)) && !some(where (p.eft == deny))
+
+[matchers]
+m = (r.domain == p.domain || p.domain == "*") && (g(p.domain, p.sub, r.sub) || r.sub == p.sub || p.sub == "*") && (r.resource_type == p.resource_type || p.resource_type == "*") && (r.resource_id == p.resource_id || p.resource_id == "*") && keyMatch2(r.act, p.act)

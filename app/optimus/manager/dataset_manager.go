@@ -21,7 +21,7 @@ import (
 	loginvb "github.com/jacklv111/optimus/pkg/iam/login/value-object"
 	psvc "github.com/jacklv111/optimus/pkg/iam/permission/service"
 	pvb "github.com/jacklv111/optimus/pkg/iam/permission/value-object"
-	lightresmgmtsvc "github.com/jacklv111/optimus/pkg/resource-manager/optimus/service"
+	resmgmtsvc "github.com/jacklv111/optimus/pkg/resource-manager/optimus/service"
 )
 
 //go:generate mockgen -source=interface.go -destination=./mock/mock_interface.go -package=mock
@@ -58,7 +58,7 @@ type DatasetMgrImpl struct {
 
 func (mgr *DatasetMgrImpl) CreateDataset(userInfo loginvb.UserInfo, req openapi.CreateDatasetRequest, workspace string) (id string, err error) {
 	// get resource management id
-	resMgmtId, err := lightresmgmtsvc.LightResMgmtSvc.GetFirst(userInfo.Domain, workspace)
+	resMgmtId, err := resmgmtsvc.ResMgmtSvc.GetFirst(userInfo.Domain, workspace)
 	if err != nil {
 		return "", err
 	}
@@ -137,7 +137,7 @@ func (mgr *DatasetMgrImpl) GetDetails(userInfo loginvb.UserInfo, datasetId strin
 }
 
 func (mgr *DatasetMgrImpl) GetList(userInfo loginvb.UserInfo, offset, limit int, workspace, sortBy, sortOrder string) (resp openapi.GetDatasetList200Response, err error) {
-	resMgmtId, err := lightresmgmtsvc.LightResMgmtSvc.GetFirst(userInfo.Domain, workspace)
+	resMgmtId, err := resmgmtsvc.ResMgmtSvc.GetFirst(userInfo.Domain, workspace)
 	if err != nil {
 		return resp, err
 	}
