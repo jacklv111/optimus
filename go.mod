@@ -34,7 +34,7 @@ require (
 	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
 	github.com/jackc/pgtype v1.12.0 // indirect
 	github.com/jackc/pgx/v4 v4.17.2 // indirect
-	github.com/jacklv111/aifs-client-go v0.0.2 // indirect
+	github.com/jacklv111/aifs-client-go v0.0.3 // indirect
 	github.com/jacklv111/common-sdk v0.0.10 // indirect
 	github.com/jinzhu/gorm v1.9.16 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect

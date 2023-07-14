@@ -129,6 +129,8 @@ github.com/jackc/puddle v1.1.3/go.mod h1:m4B5Dj62Y0fbyuIc15OsIqK0+JU8nkqQjsgx7dv
 github.com/jackc/puddle v1.3.0/go.mod h1:m4B5Dj62Y0fbyuIc15OsIqK0+JU8nkqQjsgx7dvjSWk=
 github.com/jacklv111/aifs-client-go v0.0.2 h1:Fg8Jrhn32wkOr8gfGs2VmGIQw/Cdgh80DmBjnbGSMhI=
 github.com/jacklv111/aifs-client-go v0.0.2/go.mod h1:szwKqzPA6g2xQPvwNjwGha6VjhtCo5KI6ig6912fn4U=
+github.com/jacklv111/aifs-client-go v0.0.3 h1:tH9Zy/LmSKXo1EysQ4Chq2+7aBkrb8A6N5Xu5ncrfC4=
+github.com/jacklv111/aifs-client-go v0.0.3/go.mod h1:szwKqzPA6g2xQPvwNjwGha6VjhtCo5KI6ig6912fn4U=
 github.com/jacklv111/common-sdk v0.0.10 h1:YTz8YXB5lj9NQeFcKm3zPp7jIArcsQRtN1B4t1JtzmA=
 github.com/jacklv111/common-sdk v0.0.10/go.mod h1:iiU0sg4xHIstZM151ZNKrYS4GkbUu8KyGOZtjlkDhVg=
 github.com/jinzhu/gorm v1.9.16 h1:+IyIjPEABKRpsu/F8OvDPy9fyQlgsg2luMV2ZIH5i5o=

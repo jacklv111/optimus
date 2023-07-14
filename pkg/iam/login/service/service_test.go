@@ -30,11 +30,11 @@ func Test_login_service(t *testing.T) {
 		Convey("Success", func() {
 			// signup
 			signupInfo := iamvb.SignupInfo{
-				Domain:      "gddi",
+				Domain:      "optimus",
 				Name:        "jack_test",
 				Password:    "123456",
 				DisplayName: "jacklv",
-				Email:       "jacklv@gddi.com.cn",
+				Email:       "jacklv@gmail.com.cn",
 				Phone:       "12345678901",
 				Gender:      "male",
 				IsAdmin:     true,
