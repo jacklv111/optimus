@@ -14,7 +14,7 @@ const (
 	TOKEN_EXPIRE_TIME_IN_SEC = 3600 * 24
 	CASBIN_MODEL_CONF        = "conf/casbin/model"
 	// todo: change this to env variable
-	JWT_SECRET = "663e480ccc7bf063ca484034f0500b0dd66e389715cd3a3588d6095301a0c89b"
+	JWT_SECRET = "9SQzwmbp2urd0MD_IkHJ9hxj7wUCXrgw7XF9u3UONgI"
 )
 
 func GetSecret() []byte {
