@@ -606,7 +606,7 @@ func (bo *DatasetBo) UploadDatasetZipDataAsNewVersion(versionName, zipFormat, zi
 		return err
 	}
 	// create action record
-	actionRecord, err := action.ActionMgr.Create(iamconst.RESOURCE_TYPE_VERSION, resourceId, dsconst.UPLOAD_DATASET_VERSION_ZIP, datasetZipViewId, string(jsonParams))
+	actionRecord, err := action.ActionMgr.Create(iamconst.RESOURCE_TYPE_VERSION, resourceId, datasetZipViewId, string(jsonParams))
 	if err != nil {
 		_, _ = aifsclient.GetAifsClient().DataViewApi.HardDeleteDataView(context.Background(), datasetZipViewId).Execute()
 		return err
@@ -671,7 +671,7 @@ func (bo *DatasetBo) UploadRawDataZipToPool(poolName, zipFormat string, zipData 
 		return err
 	}
 	// create action record
-	actionRecord, err := action.ActionMgr.Create(iamconst.RESOURCE_TYPE_POOL, resourceId, dsconst.UPLOAD_RAW_DATA_ZIP, datasetZipViewId, string(jsonParams))
+	actionRecord, err := action.ActionMgr.Create(iamconst.RESOURCE_TYPE_POOL, resourceId, datasetZipViewId, string(jsonParams))
 
 	if err != nil {
 		_, _ = aifsclient.GetAifsClient().DataViewApi.HardDeleteDataView(context.Background(), datasetZipViewId).Execute()

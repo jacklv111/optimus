@@ -16,6 +16,7 @@ import (
 	"github.com/jacklv111/common-sdk/env"
 	"github.com/jacklv111/common-sdk/log"
 	casbincfg "github.com/jacklv111/optimus/infra/casbin/config"
+	"github.com/jacklv111/optimus/infra/client/k8s"
 	"github.com/spf13/pflag"
 )
 
@@ -37,6 +38,7 @@ func init() {
 	ServerConfig.AddConfig(database.DbConfig)
 	ServerConfig.AddConfig(aifsclient.AifsConfig)
 	ServerConfig.AddConfig(casbincfg.CasbinConfig)
+	ServerConfig.AddConfig(k8s.K8sConfig)
 }
 
 // optimusPort getter

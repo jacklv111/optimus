@@ -21,6 +21,7 @@ import (
 	optimusapi "github.com/jacklv111/optimus/app/optimus/api"
 	"github.com/jacklv111/optimus/cmd/optimus/config"
 	gormadapter "github.com/jacklv111/optimus/infra/casbin/adapter"
+	"github.com/jacklv111/optimus/infra/client/k8s"
 	datasetscheduler "github.com/jacklv111/optimus/pkg/dataset/scheduler"
 	"github.com/spf13/cobra"
 )
@@ -74,6 +75,10 @@ func run() error {
 	}
 
 	if err := aifsclient.InitAifsClientV2(); err != nil {
+		return err
+	}
+
+	if err := k8s.InitK8sClient(); err != nil {
 		return err
 	}
 

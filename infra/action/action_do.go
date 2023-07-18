@@ -8,18 +8,12 @@
 
 package action
 
-import (
-	"database/sql"
-)
-
 type ActionDo struct {
-	ID                   sql.NullString `gorm:"column:id"`
-	Name                 string         `gorm:"column:name"`
-	ResourceManagementId string         `gorm:"column:resource_management_id"`
-	ResourceType         string         `gorm:"column:resource_type;primaryKey:priority:1;<-:create"`
-	ResourceId           string         `gorm:"column:resource_id;primaryKey:priority:2;<-:create"`
-	Params               string         `gorm:"column:params"` // json string, async task params
-	Action               string         `gorm:"column:action"`
+	Name                 string `gorm:"column:name"`
+	ResourceManagementId string `gorm:"column:resource_management_id"`
+	ResourceType         string `gorm:"column:resource_type;primaryKey:priority:1;<-:create"`
+	ResourceId           string `gorm:"column:resource_id;primaryKey:priority:2;<-:create"`
+	Params               string `gorm:"column:params"` // json string, async task params
 	// allow read and create
 	CreateAt int64 `gorm:"autoCreateTime:milli;<-:create;column:create_at"`
 	// allow read and update

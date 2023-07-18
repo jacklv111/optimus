@@ -35,18 +35,18 @@ func (m *MockActionMgrInterface) EXPECT() *MockActionMgrInterfaceMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockActionMgrInterface) Create(resourceType, resourceId, action, aName, params string) (action.ActionDo, error) {
+func (m *MockActionMgrInterface) Create(resourceType, resourceId, aName, params string) (action.ActionDo, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Create", resourceType, resourceId, action, aName, params)
+	ret := m.ctrl.Call(m, "Create", resourceType, resourceId, aName, params)
 	ret0, _ := ret[0].(action.ActionDo)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Create indicates an expected call of Create.
-func (mr *MockActionMgrInterfaceMockRecorder) Create(resourceType, resourceId, action, aName, params interface{}) *gomock.Call {
+func (mr *MockActionMgrInterfaceMockRecorder) Create(resourceType, resourceId, aName, params interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockActionMgrInterface)(nil).Create), resourceType, resourceId, action, aName, params)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockActionMgrInterface)(nil).Create), resourceType, resourceId, aName, params)
 }
 
 // Delete mocks base method.

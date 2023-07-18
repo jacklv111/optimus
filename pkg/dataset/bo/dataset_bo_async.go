@@ -10,41 +10,66 @@ package bo
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
-	"strconv"
 	"time"
 
 	aifsclient "github.com/jacklv111/common-sdk/client/aifs-client"
+	"github.com/jacklv111/common-sdk/env"
 	"github.com/jacklv111/common-sdk/log"
 	"github.com/jacklv111/common-sdk/scheduler"
+	"github.com/jacklv111/common-sdk/utils"
 	"github.com/jacklv111/optimus/infra/action"
+	"github.com/jacklv111/optimus/infra/client/k8s"
 	"github.com/jacklv111/optimus/pkg/dataset/constant"
 	dsvb "github.com/jacklv111/optimus/pkg/dataset/value-object"
+	batchv1 "k8s.io/api/batch/v1"
+	v1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type Dataset struct {
-	ID       string   `yaml:"id"`
-	Type     string   `yaml:"type"`
-	ItemType []string `yaml:"item_type"`
-}
+func startDecompressionAction(namespace, jobName, datasetZipViewId string) error {
+	// Create a Job object
+	job := &batchv1.Job{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: jobName,
+		},
 
-type Input struct {
-	DatasetZip Dataset `yaml:"dataset_zip"`
-}
+		Spec: batchv1.JobSpec{
+			Template: v1.PodTemplateSpec{
+				Spec: v1.PodSpec{
+					Containers: []v1.Container{
+						{
+							Name: "decompression",
+							// TBD
+							Image:   "your-container-image",
+							Command: []string{"your-command"},
+						},
+					},
+					RestartPolicy: v1.RestartPolicyNever,
+				},
+			},
+			BackoffLimit: utils.Int32Ptr(0), // Optional: Set the backoff limit
+		},
+	}
 
-func startDecompressionAction(datasetZipViewId, actionName string) (pid int64, err error) {
-	// todo
-	return 0, nil
+	// Create the Job in the Kubernetes cluster
+	_, err := k8s.Clientset.BatchV1().Jobs(namespace).Create(context.TODO(), job, metav1.CreateOptions{})
+	if err != nil {
+		return fmt.Errorf("error creating decompress job: %w", err)
+	}
+
+	return nil
+
 }
 
 func waitActionFinished(actionRecord action.ActionDo, params dsvb.UploadDatasetZipDataParams) {
-	id, err := startDecompressionAction(params.DatasetZipViewId, actionRecord.Name)
+	namespace := env.EnvConfig.GetEnvType()
+	jobName := fmt.Sprintf("decompression-%s", params.DatasetZipViewId)
+	err := startDecompressionAction(namespace, jobName, params.DatasetZipViewId)
 	if err != nil {
 		log.Errorf("Failed to StartDecompressionAction: %v", err)
 		return
 	}
-	actionRecord.ID = sql.NullString{String: strconv.FormatInt(id, 10), Valid: true}
 	// wait for action finished
 	scheduler.WaitCondition(constant.GET_ACTION_INTERVAL_IN_SEC, func() bool {
 		actionRecord.UpdateAt = time.Now().Unix()
@@ -53,10 +78,10 @@ func waitActionFinished(actionRecord action.ActionDo, params dsvb.UploadDatasetZ
 			log.Errorf("Failed to Updates: %v", err)
 			return false
 		}
-		// todo
-		// get job status to check if it is finished
-		return false
+
+		return k8s.IsJobCompleted(namespace, jobName)
 	})
+	k8s.DeleteJob(namespace, jobName)
 }
 
 func (bo *DatasetBo) UploadDatasetVersionZipAsync(versionName string, actionRecord action.ActionDo, params dsvb.UploadDatasetZipDataParams) {

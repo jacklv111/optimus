@@ -16,7 +16,7 @@ import (
 //go:generate mockgen -source=interface.go -destination=./mock/mock_interface.go -package=mock
 
 type ActionMgrInterface interface {
-	Create(resourceType, resourceId, action, aName, params string) (res ActionDo, err error)
+	Create(resourceType, resourceId, aName, params string) (res ActionDo, err error)
 	Updates(res ActionDo) (err error)
 	Delete(resourceType, resourceId string) (err error)
 	GetUpdateAtLessThan(time int64) (res []ActionDo, err error)
@@ -26,11 +26,10 @@ type ActionMgrInterface interface {
 type ActionMgrImpl struct {
 }
 
-func (repo *ActionMgrImpl) Create(resourceType, resourceId, action, aName, params string) (res ActionDo, err error) {
+func (repo *ActionMgrImpl) Create(resourceType, resourceId, aName, params string) (res ActionDo, err error) {
 	res = ActionDo{
 		ResourceType: resourceType,
 		ResourceId:   resourceId,
-		Action:       action,
 		Name:         aName,
 		Params:       params,
 	}
