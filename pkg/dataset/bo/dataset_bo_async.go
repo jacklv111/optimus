@@ -11,6 +11,7 @@ package bo
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	aifsclient "github.com/jacklv111/common-sdk/client/aifs-client"
@@ -28,6 +29,12 @@ import (
 )
 
 func startDecompressionAction(namespace, jobName, datasetZipViewId string) error {
+	cmd := fmt.Sprintf(`aifsctl config --aifs_ip=%s --aifs_port=%s --s3_bucket_name=%s --s3_ak=%s --s3_sk=%s --s3_endpoint=%s
+		 --s3_region=%s; /job/dataset-zip-decompression --aifs.input.dataset_zip=%s --work_dir=/job/temp --aifs-server-ip=%s --aifs-server-port=%s`,
+		os.Getenv(constant.AIFS_IP), os.Getenv(constant.AIFS_PORT),
+		os.Getenv(constant.S3_BUCKET_NAME), os.Getenv(constant.S3_AK), os.Getenv(constant.S3_SK), os.Getenv(constant.S3_ENDPOINT), os.Getenv(constant.S3_REGION),
+		datasetZipViewId, os.Getenv(constant.AIFS_IP), os.Getenv(constant.AIFS_PORT),
+	)
 	// Create a Job object
 	job := &batchv1.Job{
 		ObjectMeta: metav1.ObjectMeta{
@@ -39,10 +46,9 @@ func startDecompressionAction(namespace, jobName, datasetZipViewId string) error
 				Spec: v1.PodSpec{
 					Containers: []v1.Container{
 						{
-							Name: "decompression",
-							// TBD
-							Image:   "your-container-image",
-							Command: []string{"your-command"},
+							Name:    "decompression",
+							Image:   "swr.cn-south-1.myhuaweicloud.com/jacklv/dataset-zip-decompression:v0.0.5",
+							Command: []string{"/bin/bash", "-c", cmd},
 						},
 					},
 					RestartPolicy: v1.RestartPolicyNever,

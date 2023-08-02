@@ -12,6 +12,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"os"
 
 	"github.com/jacklv111/common-sdk/log"
 	batchv1 "k8s.io/api/batch/v1"
@@ -21,10 +22,18 @@ import (
 	"k8s.io/client-go/rest"
 )
 
+const (
+	KUBE_CA_CRT = "KUBE_CA_CRT"
+)
+
 func InitK8sClient() (err error) {
+	caCertData := []byte(os.Getenv(KUBE_CA_CRT))
 	config := &rest.Config{
 		Host: K8sConfig.ApiServerUrl,
 		// Set other configuration options as needed, such as authentication options, timeouts, etc.
+		TLSClientConfig: rest.TLSClientConfig{
+			CAData: caCertData,
+		},
 	}
 	// Create a Kubernetes clientset using the configuration
 	Clientset, err = kubernetes.NewForConfig(config)

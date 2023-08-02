@@ -22,4 +22,13 @@ const (
 	VERSION_PARTITION_NAME_TRAIN = "train"
 	VERSION_PARTITION_NAME_TEST  = "test"
 	VERSION_PARTITION_NAME_VAL   = "val"
+
+	// env var
+	AIFS_IP        = "AIFS_IP"
+	AIFS_PORT      = "AIFS_PORT"
+	S3_BUCKET_NAME = "S3_BUCKET_NAME"
+	S3_AK          = "S3_AK"
+	S3_SK          = "S3_SK"
+	S3_ENDPOINT    = "S3_ENDPOINT"
+	S3_REGION      = "S3_REGION"
 )
