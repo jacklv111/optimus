@@ -29,7 +29,7 @@ const (
 
 func InitK8sClient() (err error) {
 	caCertData := []byte(os.Getenv(KUBE_CA_CRT))
-	clientKeyData := []byte(os.Getenv("KUBE_CLIENT_KEY"))
+	clientKeyData := []byte(os.Getenv(KUBE_CLIENT_KEY))
 	config := &rest.Config{
 		Host: K8sConfig.ApiServerUrl,
 		// Set other configuration options as needed, such as authentication options, timeouts, etc.
