@@ -22,7 +22,7 @@ func main() {
 	k8s.K8sConfig.ApiServerUrl = "https://192.168.0.185:5443"
 	err := k8s.InitK8sClient()
 	if err != nil {
-		fmt.Printf("error: %s", err)
+		fmt.Printf("k8s init error: %s", err)
 	}
 	namespace := "dev"
 	jobName := "hello-world"
@@ -50,6 +50,6 @@ func main() {
 	// Create the Job in the Kubernetes cluster
 	_, err = k8s.Clientset.BatchV1().Jobs(namespace).Create(context.TODO(), job, metav1.CreateOptions{})
 	if err != nil {
-		fmt.Printf("error: %s", err)
+		fmt.Printf("create job error: %s", err)
 	}
 }
