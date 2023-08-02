@@ -257,6 +257,8 @@ github.com/jacklv111/common-sdk v0.0.10 h1:YTz8YXB5lj9NQeFcKm3zPp7jIArcsQRtN1B4t
 github.com/jacklv111/common-sdk v0.0.10/go.mod h1:iiU0sg4xHIstZM151ZNKrYS4GkbUu8KyGOZtjlkDhVg=
 github.com/jacklv111/common-sdk v0.0.11 h1:AdVV2N0Ey1U/mLbeIHkb2x6ErWuGC/wapVPk+PbOf2w=
 github.com/jacklv111/common-sdk v0.0.11/go.mod h1:iiU0sg4xHIstZM151ZNKrYS4GkbUu8KyGOZtjlkDhVg=
+github.com/jacklv111/common-sdk v0.0.12 h1:nKCctjD14aTDX+kf9m7/TFotfB6UTJ5aDd3J5+Ti6aQ=
+github.com/jacklv111/common-sdk v0.0.12/go.mod h1:iiU0sg4xHIstZM151ZNKrYS4GkbUu8KyGOZtjlkDhVg=
 github.com/jinzhu/gorm v1.9.16 h1:+IyIjPEABKRpsu/F8OvDPy9fyQlgsg2luMV2ZIH5i5o=
 github.com/jinzhu/gorm v1.9.16/go.mod h1:G3LB3wezTOWM2ITLzPxEXgSkOXAntiLHS7UdBefADcs=
 github.com/jinzhu/inflection v1.0.0 h1:K317FqzuhWc8YvSVlFMCCUb36O/S9MCKRDI7QkRKD/E=

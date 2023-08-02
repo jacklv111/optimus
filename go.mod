@@ -10,7 +10,7 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.3.0
 	github.com/jacklv111/aifs-client-go v0.0.3
-	github.com/jacklv111/common-sdk v0.0.11
+	github.com/jacklv111/common-sdk v0.0.12
 	github.com/smartystreets/goconvey v1.8.1
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/pflag v1.0.5
