@@ -10,7 +10,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/jacklv111/common-sdk/utils"
 	"github.com/jacklv111/optimus/infra/client/k8s"
@@ -21,7 +20,6 @@ import (
 
 func main() {
 	k8s.K8sConfig.ApiServerUrl = "https://192.168.0.185:5443"
-	fmt.Printf("cert: %s", os.Getenv("KUBE_CA_CRT"))
 
 	err := k8s.InitK8sClient()
 	if err != nil {
