@@ -15,8 +15,7 @@ import (
 	"os"
 
 	"github.com/jacklv111/common-sdk/log"
-	batchv1 "k8s.io/api/batch/v1"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
@@ -34,8 +33,9 @@ func InitK8sClient() (err error) {
 		Host: K8sConfig.ApiServerUrl,
 		// Set other configuration options as needed, such as authentication options, timeouts, etc.
 		TLSClientConfig: rest.TLSClientConfig{
-			CAData:  caCertData,
-			KeyData: clientKeyData,
+			KeyData:  clientKeyData,
+			CertData: caCertData,
+			CAData:   caCertData,
 		},
 	}
 	// Create a Kubernetes clientset using the configuration
@@ -57,7 +57,7 @@ func getJobLogs(namespace, jobName string) (string, error) {
 
 	var logs string
 	for _, pod := range podList.Items {
-		podLogs, err := Clientset.CoreV1().Pods(namespace).GetLogs(pod.Name, &v1.PodLogOptions{}).Stream(context.TODO())
+		podLogs, err := Clientset.CoreV1().Pods(namespace).GetLogs(pod.Name, &corev1.PodLogOptions{}).Stream(context.TODO())
 		if err != nil {
 			return "", fmt.Errorf("error reading log stream for Pod %s: %w", pod.Name, err)
 		}
@@ -77,7 +77,7 @@ func getJobLogs(namespace, jobName string) (string, error) {
 
 func DeleteJob(namespace, jobName string) error {
 	// Delete the Job from the Kubernetes cluster
-	err := Clientset.BatchV1().Jobs(namespace).Delete(context.TODO(), jobName, metav1.DeleteOptions{})
+	err := Clientset.CoreV1().Pods(namespace).Delete(context.TODO(), jobName, metav1.DeleteOptions{})
 	if err != nil {
 		return fmt.Errorf("error deleting Job: %w", err)
 	}
@@ -86,23 +86,21 @@ func DeleteJob(namespace, jobName string) error {
 }
 
 func IsJobCompleted(namespace, jobName string) bool {
-	job, err := Clientset.BatchV1().Jobs(namespace).Get(context.TODO(), jobName, metav1.GetOptions{})
+	job, err := Clientset.CoreV1().Pods(namespace).Get(context.TODO(), jobName, metav1.GetOptions{})
 	if err != nil {
 		return false
 	}
 
-	for _, condition := range job.Status.Conditions {
-		if condition.Type == batchv1.JobComplete {
-			return true
-		} else if condition.Type == batchv1.JobFailed {
-			logs, err := getJobLogs(namespace, jobName)
-			if err != nil {
-				log.Errorf("error getting Job logs: %v", err)
-				return true
-			}
-			log.Errorf("job failed: %s, logs: %s", condition.Reason, logs)
+	if job.Status.Phase == corev1.PodSucceeded {
+		return true
+	} else if job.Status.Phase == corev1.PodFailed {
+		logs, err := getJobLogs(namespace, jobName)
+		if err != nil {
+			log.Errorf("error getting Job logs: %v", err)
 			return true
 		}
+		log.Errorf("job failed: %s, logs: %s", job.Status.Reason, logs)
+		return true
 	}
 
 	return false
