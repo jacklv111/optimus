@@ -20,19 +20,23 @@ import (
 	"github.com/jacklv111/common-sdk/scheduler"
 	"github.com/jacklv111/optimus/infra/action"
 	"github.com/jacklv111/optimus/infra/client/k8s"
+	jobimage "github.com/jacklv111/optimus/infra/job-image"
 	"github.com/jacklv111/optimus/pkg/dataset/constant"
 	dsvb "github.com/jacklv111/optimus/pkg/dataset/value-object"
 	corev1 "k8s.io/api/core/v1"
-	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func startDecompressionAction(namespace, jobName, datasetZipViewId string) error {
-	cmd := fmt.Sprintf(`aifsctl config --aifs_ip=%s --aifs_port=%s --s3_bucket_name=%s --s3_ak=%s --s3_sk=%s --s3_endpoint=%s
-		 --s3_region=%s; /job/dataset-zip-decompression --aifs.input.dataset_zip=%s --work_dir=/job/temp --aifs-server-ip=%s --aifs-server-port=%s`,
-		os.Getenv(constant.AIFS_IP), os.Getenv(constant.AIFS_PORT),
+	imageName, err := jobimage.Get(jobimage.DECOMPRESS)
+	if err != nil {
+		return fmt.Errorf("error getting job image: %w", err)
+	}
+	cmd := fmt.Sprintf(`aifsctl config --aifs_ip=%s --aifs_port=%d --s3_bucket_name=%s --s3_ak=%s --s3_sk=%s --s3_endpoint=%s
+		 --s3_region=%s; /job/dataset-zip-decompression --aifs.input.dataset_zip=%s --work_dir=/job/temp --aifs-server-ip=%s --aifs-server-port=%d`,
+		aifsclient.AifsConfig.ServerIp, aifsclient.AifsConfig.ServerPort,
 		os.Getenv(constant.S3_BUCKET_NAME), os.Getenv(constant.S3_AK), os.Getenv(constant.S3_SK), os.Getenv(constant.S3_ENDPOINT), os.Getenv(constant.S3_REGION),
-		datasetZipViewId, os.Getenv(constant.AIFS_IP), os.Getenv(constant.AIFS_PORT),
+		datasetZipViewId, aifsclient.AifsConfig.ServerIp, aifsclient.AifsConfig.ServerPort,
 	)
 	// Create a Job object
 	job := &corev1.Pod{
@@ -41,19 +45,20 @@ func startDecompressionAction(namespace, jobName, datasetZipViewId string) error
 		},
 
 		Spec: corev1.PodSpec{
-			Containers: []v1.Container{
+			Containers: []corev1.Container{
 				{
-					Name:    "decompression",
-					Image:   "swr.cn-south-1.myhuaweicloud.com/jacklv/dataset-zip-decompression:v0.0.5",
+					Name:    jobimage.DECOMPRESS,
+					Image:   imageName,
 					Command: []string{"/bin/bash", "-c", cmd},
 				},
 			},
-			RestartPolicy: v1.RestartPolicyNever,
+			RestartPolicy:    corev1.RestartPolicyNever,
+			ImagePullSecrets: []corev1.LocalObjectReference{{Name: "default-secret"}},
 		},
 	}
 
 	// Create the Job in the Kubernetes cluster
-	_, err := k8s.Clientset.CoreV1().Pods(namespace).Create(context.TODO(), job, metav1.CreateOptions{})
+	_, err = k8s.Clientset.CoreV1().Pods(namespace).Create(context.TODO(), job, metav1.CreateOptions{})
 	if err != nil {
 		return fmt.Errorf("error creating decompress job: %w", err)
 	}
