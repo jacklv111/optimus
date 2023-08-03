@@ -16,10 +16,10 @@ import (
 	"github.com/jacklv111/optimus/app/optimus/view-object/openapi"
 	"github.com/jacklv111/optimus/pkg/iam/constant"
 	"github.com/jacklv111/optimus/pkg/iam/login/service"
-	valueobject "github.com/jacklv111/optimus/pkg/iam/login/value-object"
+	vb "github.com/jacklv111/optimus/pkg/iam/login/value-object"
 )
 
-func getUserInfoAndHandleError(c *gin.Context) (userInfo valueobject.UserInfo, err error) {
+func getUserInfoAndHandleError(c *gin.Context) (userInfo vb.UserInfo, err error) {
 	token := c.GetHeader(constant.AUTHORIZATION)
 	userInfo, err = service.LoginSvc.ParseUserInfoFromToken(token)
 	if err != nil {

@@ -5,7 +5,7 @@
  *
  * Author Yubinlv.
  */
-package optimus
+package api
 
 import "net/http"
 
