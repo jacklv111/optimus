@@ -17,6 +17,7 @@ import (
 	"github.com/jacklv111/common-sdk/database"
 	utilerrors "github.com/jacklv111/common-sdk/errors"
 	"github.com/jacklv111/common-sdk/log"
+	"github.com/jacklv111/common-sdk/scheduler/shedlock"
 	iamapi "github.com/jacklv111/optimus/app/iam/api"
 	optimusapi "github.com/jacklv111/optimus/app/optimus/api"
 	"github.com/jacklv111/optimus/cmd/optimus/config"
@@ -82,6 +83,9 @@ func run() error {
 		return err
 	}
 
+	if err := shedlock.Init(); err != nil {
+		return err
+	}
 	datasetscheduler.Start()
 
 	waitGroup.Add(2)
