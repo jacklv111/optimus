@@ -34,8 +34,9 @@ func main() {
 		Spec: corev1.PodSpec{
 			Containers: []corev1.Container{
 				{
-					Name:  "hello-world",
-					Image: "swr.cn-south-1.myhuaweicloud.com/jacklv/helloworld:v0.1",
+					Name:    "hello-world",
+					Image:   "swr.cn-south-1.myhuaweicloud.com/jacklv/helloworld:v0.1",
+					Command: []string{"echo", "hello world"},
 				},
 			},
 			RestartPolicy: corev1.RestartPolicyNever,
