@@ -16,7 +16,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jacklv111/common-sdk/errors"
 	"github.com/jacklv111/common-sdk/log"
-	"github.com/jacklv111/optimus/app/iam"
 	"github.com/jacklv111/optimus/app/iam/view-object/openapi"
 	"github.com/jacklv111/optimus/pkg/iam/constant"
 	"github.com/jacklv111/optimus/pkg/iam/login/service"
@@ -30,14 +29,14 @@ func CreatePermission(c *gin.Context) {
 	userInfo, err := service.LoginSvc.ParseUserInfoFromToken(token)
 	if err != nil {
 		log.Errorf("Error occurred when parsing token %s", err)
-		c.Error(errors.NewAppErr(iam.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 		return
 	}
 	var req openapi.Permission
 	err = c.BindJSON(&req)
 	if err != nil {
 		log.Errorf("Error occurred when binding json %s", err)
-		c.Error(errors.NewAppErr(iam.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 	}
 
 	// 检查用户是否有对资源授权的权限
@@ -50,14 +49,13 @@ func CreatePermission(c *gin.Context) {
 	})
 	if err != nil {
 		log.Errorf("Error occurred when enforcing permission %s", err)
-		c.Error(errors.NewAppErr(iam.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 
 	if !hasAuth {
 		log.Errorf("User %s has no permission to authorize resource %s", userInfo.Name, req.ResourceType)
-		// todo 修改错误码和 msg
-		c.JSON(http.StatusBadRequest, openapi.Error{Code: "1", Message: "User has no permission to authorize resource"})
+		c.Error(errors.NewAppErr(NO_PERMISSION, err, err.Error()))
 		return
 	}
 
@@ -70,7 +68,7 @@ func CreatePermission(c *gin.Context) {
 	})
 	if err != nil {
 		log.Errorf("Error occurred when creating permission %s", err)
-		c.Error(errors.NewAppErr(iam.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 
@@ -83,14 +81,14 @@ func DeletePermission(c *gin.Context) {
 	userInfo, err := service.LoginSvc.ParseUserInfoFromToken(token)
 	if err != nil {
 		log.Errorf("Error occurred when parsing token %s", err)
-		c.Error(errors.NewAppErr(iam.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 		return
 	}
 	var req openapi.Permission
 	err = c.BindJSON(&req)
 	if err != nil {
 		log.Errorf("Error occurred when binding json %s", err)
-		c.Error(errors.NewAppErr(iam.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 	}
 
 	// 检查用户是否有对资源授权的权限
@@ -103,13 +101,13 @@ func DeletePermission(c *gin.Context) {
 	})
 	if err != nil {
 		log.Errorf("Error occurred when enforcing permission %s", err)
-		c.Error(errors.NewAppErr(iam.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 
 	if !hasAuth {
 		log.Errorf("User %s has no permission to authorize resource %s", userInfo.Name, req.ResourceType)
-		c.Error(errors.NewAppErr(iam.NO_PERMISSION, err, err.Error()))
+		c.Error(errors.NewAppErr(NO_PERMISSION, err, err.Error()))
 		return
 	}
 
@@ -122,7 +120,7 @@ func DeletePermission(c *gin.Context) {
 	})
 	if err != nil {
 		log.Errorf("Error occurred when deleting permission %s", err)
-		c.Error(errors.NewAppErr(iam.NO_PERMISSION, err, err.Error()))
+		c.Error(errors.NewAppErr(NO_PERMISSION, err, err.Error()))
 		return
 	}
 
@@ -135,14 +133,14 @@ func ValidateOperation(c *gin.Context) {
 	userInfo, err := service.LoginSvc.ParseUserInfoFromToken(token)
 	if err != nil {
 		log.Errorf("Error occurred when parsing token %s", err)
-		c.Error(errors.NewAppErr(iam.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 		return
 	}
 	var req openapi.EnforcePermissionReq
 	err = c.BindJSON(&req)
 	if err != nil {
 		log.Errorf("Error occurred when binding json %s", err)
-		c.Error(errors.NewAppErr(iam.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 	}
 
 	hasAuth, err := psvc.PermissionSvc.Enforce(pvb.PermissionEnforce{
@@ -154,14 +152,14 @@ func ValidateOperation(c *gin.Context) {
 	})
 	if err != nil {
 		log.Errorf("Error occurred when enforcing permission %s", err)
-		c.Error(errors.NewAppErr(iam.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 
 	if !hasAuth {
 		errMsg := fmt.Sprintf("User %s has no permission to %s resource %s/%s", userInfo.Name, req.Action, req.ServiceName, req.ResourceType)
 		log.Error(errMsg)
-		c.Error(errors.NewAppErr(iam.NO_PERMISSION, err, err.Error()))
+		c.Error(errors.NewAppErr(NO_PERMISSION, err, err.Error()))
 		return
 	}
 

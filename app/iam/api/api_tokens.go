@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jacklv111/common-sdk/errors"
 	"github.com/jacklv111/common-sdk/log"
 	"github.com/jacklv111/optimus/app/iam/view-object/openapi"
 	"github.com/jacklv111/optimus/pkg/iam/constant"
@@ -26,8 +27,7 @@ func GetTokenInfo(c *gin.Context) {
 	userInfo, err := service.LoginSvc.ParseUserInfoFromToken(token)
 	if err != nil {
 		log.Errorf("Error occurred when parsing token %s", err)
-		// todo 修改错误码和 msg
-		c.JSON(http.StatusUnauthorized, openapi.Error{Code: "1", Message: err.Error()})
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 		return
 	}
 	var resp openapi.TokenInfo

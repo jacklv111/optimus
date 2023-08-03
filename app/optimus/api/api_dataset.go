@@ -18,7 +18,6 @@ import (
 	"github.com/jacklv111/common-sdk/errors"
 	"github.com/jacklv111/common-sdk/log"
 	"github.com/jacklv111/common-sdk/utils"
-	"github.com/jacklv111/optimus/app/optimus"
 	"github.com/jacklv111/optimus/app/optimus/manager"
 	"github.com/jacklv111/optimus/app/optimus/view-object/openapi"
 	"github.com/jacklv111/optimus/pkg/dataset"
@@ -35,7 +34,7 @@ func CreateDataset(c *gin.Context) {
 	err = c.BindJSON(&req)
 	if err != nil {
 		log.Errorf("Error occurred when binding json %s", err)
-		c.Error(errors.NewAppErr(optimus.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 		return
 	}
 	workspace := c.DefaultQuery(WORKSPACE, DEFAULT_WORKSPACE)
@@ -43,7 +42,7 @@ func CreateDataset(c *gin.Context) {
 	id, err := manager.DatasetMgr.CreateDataset(userInfo, req, workspace)
 	if err != nil {
 		log.Errorf("Create dataset failed, error: %s", err)
-		c.Error(errors.NewAppErr(optimus.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 
@@ -60,11 +59,11 @@ func DeleteDataset(c *gin.Context) {
 	err = manager.DatasetMgr.DeleteDataset(userInfo, datasetId.String())
 	if err != nil {
 		if err == dataset.ErrNotFound {
-			c.Error(errors.NewAppErr(optimus.NOT_FOUND, err, err.Error()))
+			c.Error(errors.NewAppErr(NOT_FOUND, err, err.Error()))
 			return
 		}
 		log.Errorf("Delete dataset failed, error: %s", err)
-		c.Error(errors.NewAppErr(optimus.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 	c.Status(http.StatusOK)
@@ -81,7 +80,7 @@ func GetDatasetDetails(c *gin.Context) {
 	details, err := manager.DatasetMgr.GetDetails(userInfo, datasetId.String())
 	if err != nil {
 		log.Errorf("Get dataset details failed, error: %s", err)
-		c.Error(errors.NewAppErr(optimus.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 
@@ -99,13 +98,13 @@ func GetDatasetList(c *gin.Context) {
 	offset, err := utils.ParseInt(c.Query(OFFSET_STR), 0, math.MaxInt, 0)
 	if err != nil {
 		log.Errorf("Error occurred when parsing offset type %s", err)
-		c.Error(errors.NewAppErr(optimus.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 		return
 	}
 	limit, err := utils.ParseInt(c.Query(LIMIT_STR), LIMIT_MIN, LIMIT_MAX, 10)
 	if err != nil {
 		log.Errorf("Error occurred when parsing limit type %s", err)
-		c.Error(errors.NewAppErr(optimus.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 		return
 	}
 	sortBy := c.DefaultQuery(SORT_BY, DEFAULT_SORT_BY)
@@ -115,7 +114,7 @@ func GetDatasetList(c *gin.Context) {
 
 	if err != nil {
 		log.Errorf("Get dataset list failed, error: %s", err)
-		c.Error(errors.NewAppErr(optimus.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 
@@ -132,7 +131,7 @@ func UploadDatasetZipData(c *gin.Context) {
 	zipFileName := c.GetHeader(X_ZIP_FILE_NAME)
 	if zipFileName == "" {
 		log.Error("zip file name is empty")
-		c.Error(errors.NewAppErr(optimus.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 		return
 	}
 	defer c.Request.Body.Close()
@@ -140,11 +139,11 @@ func UploadDatasetZipData(c *gin.Context) {
 	err = manager.DatasetMgr.UploadDatasetZipData(userInfo, datasetId, zipFormat, zipFileName, c.Request.Body)
 	if err != nil {
 		if err == dataset.ErrNotFound {
-			c.Error(errors.NewAppErr(optimus.NOT_FOUND, err, err.Error()))
+			c.Error(errors.NewAppErr(NOT_FOUND, err, err.Error()))
 			return
 		}
 		log.Errorf("Upload dataset raw data failed, error: %s", err)
-		c.Error(errors.NewAppErr(optimus.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 	c.Status(http.StatusOK)
@@ -161,13 +160,13 @@ func GetDataPoolDataItems(c *gin.Context) {
 	offset, err := utils.ParseInt(c.Query(OFFSET_STR), 0, math.MaxInt, 0)
 	if err != nil {
 		log.Errorf("Error occurred when parsing offset type %s", err)
-		c.Error(errors.NewAppErr(optimus.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 		return
 	}
 	limit, err := utils.ParseInt(c.Query(LIMIT_STR), LIMIT_MIN, LIMIT_MAX, 10)
 	if err != nil {
 		log.Errorf("Error occurred when parsing limit type %s", err)
-		c.Error(errors.NewAppErr(optimus.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 		return
 	}
 	poolName := c.Param(POOL_NAME)
@@ -177,11 +176,11 @@ func GetDataPoolDataItems(c *gin.Context) {
 	datasetItemList, err := manager.DatasetMgr.GetDataPoolItems(userInfo, datasetId.String(), poolName, offset, limit, labelId, hasAnnoFilter)
 	if err != nil {
 		if err == dataset.ErrNotFound {
-			c.Error(errors.NewAppErr(optimus.NOT_FOUND, err, err.Error()))
+			c.Error(errors.NewAppErr(NOT_FOUND, err, err.Error()))
 			return
 		}
 		log.Errorf("Get dataset data failed, error: %s", err)
-		c.Error(errors.NewAppErr(optimus.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, datasetItemList)
@@ -198,17 +197,17 @@ func UpdateDataset(c *gin.Context) {
 	err = c.BindJSON(&req)
 	if err != nil {
 		log.Errorf("Bind json failed, error: %s", err)
-		c.Error(errors.NewAppErr(optimus.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 		return
 	}
 	err = manager.DatasetMgr.UpdateDataset(userInfo, datasetId, req)
 	if err != nil {
 		if err == dataset.ErrNotFound {
-			c.Error(errors.NewAppErr(optimus.NOT_FOUND, err, err.Error()))
+			c.Error(errors.NewAppErr(NOT_FOUND, err, err.Error()))
 			return
 		}
 		log.Errorf("Update dataset failed, error: %s", err)
-		c.Error(errors.NewAppErr(optimus.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 

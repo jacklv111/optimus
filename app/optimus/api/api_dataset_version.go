@@ -18,7 +18,6 @@ import (
 	"github.com/jacklv111/common-sdk/errors"
 	"github.com/jacklv111/common-sdk/log"
 	"github.com/jacklv111/common-sdk/utils"
-	"github.com/jacklv111/optimus/app/optimus"
 	"github.com/jacklv111/optimus/app/optimus/manager"
 	"github.com/jacklv111/optimus/app/optimus/view-object/openapi"
 	"github.com/jacklv111/optimus/pkg/dataset"
@@ -35,17 +34,17 @@ func CreateDatasetVersion(c *gin.Context) {
 	err = c.BindJSON(&req)
 	if err != nil {
 		log.Errorf("Bind json failed, error: %s", err)
-		c.Error(errors.NewAppErr(optimus.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 		return
 	}
 	err = manager.DatasetMgr.CreateDatasetVersion(userInfo, datasetId, req)
 	if err != nil {
 		if err == dataset.ErrNotFound {
-			c.Error(errors.NewAppErr(optimus.NOT_FOUND, err, err.Error()))
+			c.Error(errors.NewAppErr(NOT_FOUND, err, err.Error()))
 			return
 		}
 		log.Errorf("Create dataset version failed, error: %s", err)
-		c.Error(errors.NewAppErr(optimus.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 	c.Status(http.StatusOK)
@@ -62,11 +61,11 @@ func DeleteDatasetVersion(c *gin.Context) {
 	err = manager.DatasetMgr.DeleteVersion(userInfo, datasetId, versionName)
 	if err != nil {
 		if err == dataset.ErrNotFound {
-			c.Error(errors.NewAppErr(optimus.NOT_FOUND, err, err.Error()))
+			c.Error(errors.NewAppErr(NOT_FOUND, err, err.Error()))
 			return
 		}
 		log.Errorf("Delete dataset version failed, error: %s", err)
-		c.Error(errors.NewAppErr(optimus.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 	c.Status(http.StatusOK)
@@ -83,13 +82,13 @@ func GetVersionDataItems(c *gin.Context) {
 	offset, err := utils.ParseInt(c.Query(OFFSET_STR), 0, math.MaxInt, 0)
 	if err != nil {
 		log.Errorf("Error occurred when parsing offset type %s", err)
-		c.Error(errors.NewAppErr(optimus.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 		return
 	}
 	limit, err := utils.ParseInt(c.Query(LIMIT_STR), LIMIT_MIN, LIMIT_MAX, 10)
 	if err != nil {
 		log.Errorf("Error occurred when parsing limit type %s", err)
-		c.Error(errors.NewAppErr(optimus.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 		return
 	}
 	versionName := c.Param(VERSION_NAME)
@@ -100,11 +99,11 @@ func GetVersionDataItems(c *gin.Context) {
 	datasetItemList, err := manager.DatasetMgr.GetVersionDataItems(userInfo, datasetId.String(), versionName, versionPartitionName, offset, limit, labelId, hasAnnoFilter)
 	if err != nil {
 		if err == dataset.ErrNotFound {
-			c.Error(errors.NewAppErr(optimus.NOT_FOUND, err, err.Error()))
+			c.Error(errors.NewAppErr(NOT_FOUND, err, err.Error()))
 			return
 		}
 		log.Errorf("Get dataset data failed, error: %s", err)
-		c.Error(errors.NewAppErr(optimus.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, datasetItemList)

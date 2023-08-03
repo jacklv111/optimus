@@ -5,7 +5,7 @@
  *
  * Author Yubinlv.
  */
-package iam
+package api
 
 import (
 	"fmt"
@@ -23,25 +23,26 @@ func ErrorHandler() gin.HandlerFunc {
 		c.Next() // 先调用c.Next()执行后面的中间件
 		// 所有中间件及router处理完毕后从这里开始执行
 		// 检查c.Errors中是否有错误
-		for _, e := range c.Errors {
-			err := e.Err
-			// 若是自定义的错误则将code、msg返回
-			if appErr, ok := err.(errors.AppError); ok {
-				log.Error("app error: %s", appErr.Error())
-				msg := fmt.Sprintf(GetMsgTemplateByAppErrorCode(appErr.Code()), appErr.Args())
-				c.JSON(http.StatusOK, gin.H{
+		if len(c.Errors) == 0 {
+			return
+		}
+		err := c.Errors[0].Err // 获取错误
+		// 若是自定义的错误则将code、msg返回
+		if appErr, ok := err.(errors.AppError); ok {
+			log.Error("app error: %s", appErr.Error())
+			msg := fmt.Sprintf(GetMsgTemplateByAppErrorCode(appErr.Code()), appErr.Args())
+			c.JSON(GetHttpStatusByAppErrorCode(appErr.Code()),
+				gin.H{
 					"code": appErr.Code(),
 					"msg":  msg,
 				})
-			} else {
-				// 若非自定义错误则返回详细错误信息err.Error()
-				// 比如save session出错时设置的err
-				c.JSON(http.StatusOK, gin.H{
-					"code": http.StatusInternalServerError,
-					"msg":  err.Error(),
-				})
-			}
-			return // 检查一个错误就行
+		} else {
+			// 若非自定义错误则返回详细错误信息err.Error()
+			// 比如save session出错时设置的err
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"code": http.StatusInternalServerError,
+				"msg":  err.Error(),
+			})
 		}
 	}
 }

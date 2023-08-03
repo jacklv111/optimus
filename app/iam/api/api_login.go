@@ -15,7 +15,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jacklv111/common-sdk/errors"
 	"github.com/jacklv111/common-sdk/log"
-	"github.com/jacklv111/optimus/app/iam"
 	"github.com/jacklv111/optimus/app/iam/view-object/openapi"
 	"github.com/jacklv111/optimus/app/optimus/api"
 	"github.com/jacklv111/optimus/pkg/iam/constant"
@@ -31,13 +30,13 @@ func Login(c *gin.Context) {
 	err := c.BindJSON(&req)
 	if err != nil {
 		log.Errorf("Error occurred when binding json %s", err)
-		c.Error(errors.NewAppErr(iam.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 		return
 	}
 	tokenString, err := loginsvc.LoginSvc.Login(req.Username, req.Username, req.Password)
 	if err != nil {
 		log.Errorf("login failed, error: %s", err)
-		c.Error(errors.NewAppErr(iam.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 
@@ -50,7 +49,7 @@ func Signup(c *gin.Context) {
 	err := c.BindJSON(&req)
 	if err != nil {
 		log.Errorf("Error occurred when binding json %s", err)
-		c.Error(errors.NewAppErr(iam.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 		return
 	}
 	signupInfo := loginvb.SignupInfo{
@@ -66,7 +65,7 @@ func Signup(c *gin.Context) {
 
 	if err != nil {
 		log.Errorf("Error occurred when creating signupinfo %s", err)
-		c.Error(errors.NewAppErr(iam.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 
@@ -74,13 +73,13 @@ func Signup(c *gin.Context) {
 
 	if err != nil {
 		log.Errorf("Error occurred when adding role for user %s", err)
-		c.Error(errors.NewAppErr(iam.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 	_, err = resmgmtsvc.ResMgmtSvc.Create(signupInfo.Domain, api.DEFAULT_WORKSPACE)
 	if err != nil {
 		log.Errorf("Error occurred when creating workspace %s", err)
-		c.Error(errors.NewAppErr(iam.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 	// assemble

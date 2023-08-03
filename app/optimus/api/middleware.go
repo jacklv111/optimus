@@ -39,7 +39,7 @@ func ErrorHandler() gin.HandlerFunc {
 		} else {
 			// 若非自定义错误则返回详细错误信息err.Error()
 			// 比如save session出错时设置的err
-			c.JSON(http.StatusOK, gin.H{
+			c.JSON(http.StatusInternalServerError, gin.H{
 				"code": http.StatusInternalServerError,
 				"msg":  err.Error(),
 			})

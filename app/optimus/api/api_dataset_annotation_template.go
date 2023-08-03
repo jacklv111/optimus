@@ -15,7 +15,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jacklv111/common-sdk/errors"
 	"github.com/jacklv111/common-sdk/log"
-	"github.com/jacklv111/optimus/app/optimus"
 	"github.com/jacklv111/optimus/app/optimus/manager"
 	"github.com/jacklv111/optimus/app/optimus/view-object/openapi"
 	"github.com/jacklv111/optimus/pkg/dataset"
@@ -32,17 +31,17 @@ func CreateDatasetAnnotationTemplate(c *gin.Context) {
 	err = c.BindJSON(&req)
 	if err != nil {
 		log.Errorf("Bind json failed, error: %s", err)
-		c.Error(errors.NewAppErr(optimus.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 		return
 	}
 	err = manager.DatasetMgr.CreateDatasetAnnotationTemplate(userInfo, datasetId, req)
 	if err != nil {
 		if err == dataset.ErrNotFound {
-			c.Error(errors.NewAppErr(optimus.NOT_FOUND, err, err.Error()))
+			c.Error(errors.NewAppErr(NOT_FOUND, err, err.Error()))
 			return
 		}
 		log.Errorf("Create dataset annotation template failed, error: %s", err)
-		c.Error(errors.NewAppErr(optimus.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 
@@ -59,11 +58,11 @@ func GetDatasetAnnotationTemplate(c *gin.Context) {
 	annoTempDetails, err := manager.DatasetMgr.GetDatasetAnnotationTemplate(userInfo, datasetId)
 	if err != nil {
 		if err == dataset.ErrNotFound {
-			c.Error(errors.NewAppErr(optimus.NOT_FOUND, err, err.Error()))
+			c.Error(errors.NewAppErr(NOT_FOUND, err, err.Error()))
 			return
 		}
 		log.Errorf("Get dataset annotation template failed, error: %s", err)
-		c.Error(errors.NewAppErr(optimus.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, annoTempDetails)
@@ -80,17 +79,17 @@ func UpdateDatasetAnnotationTemplate(c *gin.Context) {
 	err = c.BindJSON(&req)
 	if err != nil {
 		log.Errorf("Bind json failed, error: %s", err)
-		c.Error(errors.NewAppErr(optimus.INVALID_PARAMS, err, err.Error()))
+		c.Error(errors.NewAppErr(INVALID_PARAMS, err, err.Error()))
 		return
 	}
 	err = manager.DatasetMgr.UpdateDatasetAnnotationTemplate(userInfo, datasetId, req)
 	if err != nil {
 		if err == dataset.ErrNotFound {
-			c.Error(errors.NewAppErr(optimus.NOT_FOUND, err, err.Error()))
+			c.Error(errors.NewAppErr(NOT_FOUND, err, err.Error()))
 			return
 		}
 		log.Errorf("Update dataset annotation template failed, error: %s", err)
-		c.Error(errors.NewAppErr(optimus.UNDEFINED_ERROR, err, err.Error()))
+		c.Error(errors.NewAppErr(UNDEFINED_ERROR, err, err.Error()))
 		return
 	}
 	c.Status(http.StatusOK)
