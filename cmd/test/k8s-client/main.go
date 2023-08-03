@@ -40,7 +40,8 @@ func main() {
 					Command: []string{"echo", "hello world"},
 				},
 			},
-			RestartPolicy: corev1.RestartPolicyNever,
+			RestartPolicy:    corev1.RestartPolicyNever,
+			ImagePullSecrets: []corev1.LocalObjectReference{{Name: "default-secret"}},
 		},
 	}
 	// Create the Job in the Kubernetes cluster
