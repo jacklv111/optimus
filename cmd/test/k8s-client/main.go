@@ -19,7 +19,7 @@ import (
 )
 
 func main() {
-
+	k8s.K8sConfig.ApiServerUrl = "https://192.168.0.185:5443"
 	err := k8s.InitK8sClient()
 	if err != nil {
 		fmt.Printf("k8s init error: %s", err)
@@ -52,7 +52,7 @@ func main() {
 	scheduler.WaitCondition(3, func() bool {
 		isCompleted := k8s.IsJobCompleted(namespace, jobName)
 		fmt.Println(isCompleted, err)
-		return isCompleted
+		return k8s.IsJobCompleted(namespace, jobName)
 	})
 	err = k8s.DeleteJob(namespace, jobName)
 	if err != nil {
