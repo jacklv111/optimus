@@ -24,6 +24,7 @@ import (
 const (
 	KUBE_CA_CRT     = "KUBE_CA_CRT"
 	KUBE_CLIENT_KEY = "KUBE_CLIENT_KEY"
+	TOKEN_PATH      = "/var/run/secrets/kubernetes.io/serviceaccount/token"
 )
 
 func InitK8sClient() (err error) {
@@ -37,6 +38,7 @@ func InitK8sClient() (err error) {
 			CertData: caCertData,
 			CAData:   caCertData,
 		},
+		BearerTokenFile: TOKEN_PATH,
 	}
 	// Create a Kubernetes clientset using the configuration
 	Clientset, err = kubernetes.NewForConfig(config)
