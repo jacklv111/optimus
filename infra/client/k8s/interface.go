@@ -12,7 +12,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"os"
 
 	"github.com/jacklv111/common-sdk/log"
 	corev1 "k8s.io/api/core/v1"
@@ -28,17 +27,23 @@ const (
 )
 
 func InitK8sClient() (err error) {
-	caCertData := []byte(os.Getenv(KUBE_CA_CRT))
-	clientKeyData := []byte(os.Getenv(KUBE_CLIENT_KEY))
-	config := &rest.Config{
-		Host: K8sConfig.ApiServerUrl,
-		// Set other configuration options as needed, such as authentication options, timeouts, etc.
-		TLSClientConfig: rest.TLSClientConfig{
-			KeyData:  clientKeyData,
-			CertData: caCertData,
-			CAData:   caCertData,
-		},
-		BearerTokenFile: TOKEN_PATH,
+	/*
+		caCertData := []byte(os.Getenv(KUBE_CA_CRT))
+		clientKeyData := []byte(os.Getenv(KUBE_CLIENT_KEY))
+		config := &rest.Config{
+			Host: K8sConfig.ApiServerUrl,
+			// Set other configuration options as needed, such as authentication options, timeouts, etc.
+			TLSClientConfig: rest.TLSClientConfig{
+				KeyData:  clientKeyData,
+				CertData: caCertData,
+				CAData:   caCertData,
+			},
+			BearerTokenFile: TOKEN_PATH,
+		}
+	*/
+	config, err := rest.InClusterConfig()
+	if err != nil {
+		return err
 	}
 	// Create a Kubernetes clientset using the configuration
 	Clientset, err = kubernetes.NewForConfig(config)
