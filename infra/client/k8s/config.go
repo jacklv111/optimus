@@ -8,6 +8,9 @@
 package k8s
 
 import (
+	"net"
+	"os"
+
 	"github.com/spf13/pflag"
 )
 
@@ -28,7 +31,9 @@ func (cfg *k8sConfig) ReadFromFile() error {
 }
 
 func (cfg *k8sConfig) AddFlags(flagSet *pflag.FlagSet) {
-	flagSet.StringVar(&cfg.ApiServerUrl, "k8s-api-server-url", cfg.ApiServerUrl, "k8s api server url")
+	host, port := os.Getenv("KUBERNETES_SERVICE_HOST"), os.Getenv("KUBERNETES_SERVICE_PORT")
+	defaultApiServerUrl := "https://" + net.JoinHostPort(host, port)
+	flagSet.StringVar(&cfg.ApiServerUrl, "k8s-api-server-url", defaultApiServerUrl, "k8s api server url")
 }
 
 func (cfg *k8sConfig) Validate() []error {
