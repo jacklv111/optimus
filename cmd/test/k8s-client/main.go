@@ -12,6 +12,7 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
+	"github.com/jacklv111/common-sdk/log"
 	"github.com/jacklv111/common-sdk/scheduler"
 	"github.com/jacklv111/optimus/infra/client/k8s"
 	corev1 "k8s.io/api/core/v1"
@@ -55,8 +56,11 @@ func main() {
 		fmt.Println(isCompleted, err)
 		return k8s.IsJobCompleted(namespace, jobName)
 	})
+	log.Infof("delete %s:%s", namespace, jobName)
 	err = k8s.DeleteJob(namespace, jobName)
 	if err != nil {
 		fmt.Printf("delete job error: %s", err)
+	} else {
+		fmt.Println("delete job success")
 	}
 }
