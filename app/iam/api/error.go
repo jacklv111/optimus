@@ -5,7 +5,7 @@
  *
  * Author Yubinlv.
  */
-package iam
+package api
 
 import "net/http"
 
