@@ -22,7 +22,7 @@ import (
 )
 
 const (
-	ADMIN_SERVICE_ACCOUNT_PATH = "admin/secret"
+	ADMIN_SERVICE_ACCOUNT_PATH = "/admin/secret"
 )
 
 func InitK8sClient() (err error) {
