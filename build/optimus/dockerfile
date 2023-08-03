@@ -16,7 +16,7 @@ RUN go env -w GOPROXY=https://goproxy.cn,direct && \
     go build -o server cmd/optimus/main.go
 
 RUN mv /apiserver/build/server /apiserver/server && \
-    mkdir -p /apiserver/conf/casbin/model && \
+    mkdir -p /apiserver/conf/casbin && \
     cp conf/casbin/model /apiserver/conf/casbin/model && \
     rm -rf /apiserver/build
 
